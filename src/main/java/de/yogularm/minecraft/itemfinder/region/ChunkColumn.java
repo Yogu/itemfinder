@@ -16,7 +16,7 @@ public class ChunkColumn {
 	private ChunkColumn() {
 	}
 	
-	public static ChunkColumn load(InputStream stream, int regionX, int regionZ)
+	public static ChunkColumn load(InputStream stream)
 			throws IOException {
 		ChunkColumn column = new ChunkColumn();
 		
@@ -28,20 +28,18 @@ public class ChunkColumn {
 			column.z = level.getInteger("zPos");
 		}
 		
-		Vector chunkPosition = new Vector(column.x * 16, 0, column.z * 16);
-		
 		Builder<DroppedItem> items = new Builder<>();
 		for (TagCompound entity : level.getList("Entities", TagCompound.class)) {
 			if (!entity.getString("id").equals("Item"))
 				continue;
 			TagCompound item = entity.getCompound("Item");
 			
-			Vector position = new Vector(entity.getDoubleArray("Pos")).add(chunkPosition);
+			Vector position = new Vector(entity.getDoubleArray("Pos"));//.add(chunkPosition);
 			
 			items.add(new DroppedItem(
 					item.getShort("id"),
-					item.getByte("Count"),
 					item.getShort("Damage"),
+					item.getByte("Count"),
 					position));
 		}
 		column.items = items.build();

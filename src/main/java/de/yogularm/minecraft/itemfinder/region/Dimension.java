@@ -33,14 +33,10 @@ public class Dimension {
 				if (!fileNameMatcher.matches())
 					continue;
 
-				int regionX = Integer.parseInt(fileNameMatcher.group(1));
-				int regionZ = Integer.parseInt(fileNameMatcher.group(2));
-
 				try (AnvilReader reader = new AnvilReader(regionPath)) {
 					while (reader.hasMore()) {
 						try (InputStream chunkStream = reader.readChunkColumn()) {
-							ChunkColumn column = ChunkColumn.load(chunkStream,
-									regionX, regionZ);
+							ChunkColumn column = ChunkColumn.load(chunkStream);
 							items.addAll(column.getDroppedItems());
 						}
 					}
