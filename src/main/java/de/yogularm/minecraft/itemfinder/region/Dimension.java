@@ -1,6 +1,5 @@
 package de.yogularm.minecraft.itemfinder.region;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
@@ -39,19 +38,11 @@ public class Dimension {
 				int regionZ = Integer.parseInt(fileNameMatcher.group(2));
 
 				try (AnvilReader reader = new AnvilReader(regionPath)) {
-
-					int i = 0;
 					while (reader.hasMore()) {
 						try (InputStream chunkStream = reader.readChunkColumn()) {
-							try {
-								ChunkColumn column = ChunkColumn.load(
-										chunkStream, regionX, regionZ);
-								i++;
-								System.out.print(".");
-								items.addAll(column.getDroppedItems());
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							ChunkColumn column = ChunkColumn.load(chunkStream,
+									regionX, regionZ);
+							items.addAll(column.getDroppedItems());
 						}
 					}
 				}

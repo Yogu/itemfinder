@@ -5,8 +5,6 @@ import java.io.InputStream;
 
 import com.evilco.mc.nbt.stream.NbtInputStream;
 import com.evilco.mc.nbt.tag.ITag;
-import com.evilco.mc.nbt.tag.TagType;
-
 
 public class NBTUtils {
 	@SuppressWarnings("unchecked")

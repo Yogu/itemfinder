@@ -2,7 +2,6 @@ package de.yogularm.minecraft.itemfinder.region;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -16,7 +15,6 @@ public class AnvilReader implements AutoCloseable {
 	private RandomAccessFile file;
 
 	private static final int SECTOR_SIZE = 4096;
-	private static final int METADATA_SIZE = 4096 * 2;
 
 	/**
 	 * Stores the positions where there are chunks
@@ -60,31 +58,7 @@ public class AnvilReader implements AutoCloseable {
 		InputStream chunkStream;
 		switch (compression) {
 		case 2:
-			/*Inflater inflater = new Inflater();
-			inflater.setInput(rawChunkData);
-			byte[] uncompressed = new byte[100000];
-			int uncompressedLength = 0;
-			try {
-				uncompressedLength = inflater.inflate(uncompressed);
-			} catch (DataFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			uncompressed = Arrays.copyOf(uncompressed, uncompressedLength);
-			System.out.println(rawChunkData.length);
-			System.out.println(uncompressedLength);
-			try (FileOutputStream os = new FileOutputStream("/home/jan/test-" + nextChunkPosition + ".nbt")) {
-				os.write(uncompressed, 0, uncompressedLength); 
-			}*/
-			
 			chunkStream = new BufferedInputStream(new InflaterInputStream(rawChunkStream));
-			//byte[] uncompressed2 = new byte[uncompressedLength];
-			//new DataInputStream(chunkStream).readFully(uncompressed2);
-			//System.out.println(Arrays.equals(uncompressed2, uncompressed));
-			//chunkStream = new ByteArrayInputStream(uncompressed2);
-			
-			//System.out.println("/home/jan/test-" + nextChunkPosition + ".nbt");
-			//chunkStream = new FileInputStream("/home/jan/test-" + nextChunkPosition + ".nbt");
 			break;
 		default:
 			throw new InvalidSaveFormatException(
