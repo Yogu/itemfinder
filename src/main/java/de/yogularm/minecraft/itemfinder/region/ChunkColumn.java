@@ -20,7 +20,7 @@ public class ChunkColumn {
 			throws IOException {
 		ChunkColumn column = new ChunkColumn();
 		
-		TagCompound tag = NBTUtils.load(stream, TagCompound.class);
+		TagCompound tag = NBTUtils.load(stream);
 		TagCompound level = tag.getCompound("Level");
 		
 		if (level.getTag("xPos") != null) {

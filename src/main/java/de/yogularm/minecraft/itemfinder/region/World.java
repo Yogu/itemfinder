@@ -11,8 +11,11 @@ public class World {
 	private Dimension overworld;
 	private Dimension nether;
 	private Dimension end;
-	
+	private ForgeData forgeData;
+
 	public World(Path path) throws IOException {
+		forgeData = new ForgeData(path.resolve("level.dat"));
+		
 		overworld = new Dimension(path.resolve("region"));
 		
 		Path p = path.resolve("DIM-1").resolve("region");
@@ -34,5 +37,9 @@ public class World {
 
 	public Dimension getEnd() {
 		return end;
+	}
+	
+	public ForgeData getForgeData() {
+		return forgeData;
 	}
 }

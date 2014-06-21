@@ -1,6 +1,7 @@
 package de.yogularm.minecraft.itemfinder.region;
 
 
+
 public class DroppedItem {
 	private int id;
 	private int damage;
@@ -32,7 +33,11 @@ public class DroppedItem {
 	
 	@Override
 	public String toString() {
-		String name = ItemNames.getName(id, damage);
+		return toString(new VanillaItemNameProvider());
+	}
+	
+	public String toString(ItemNameProvider itemNameProvider) {
+		String name = itemNameProvider.getItemName(id, damage);
 		if (count > 1)
 			name = count + "x " + name;
 		name += " @ " + position;

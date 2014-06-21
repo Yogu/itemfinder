@@ -60,7 +60,7 @@ public class ItemFinderCli {
 		System.out.println("Found Items:");
 
 		for (DroppedItem item : world.getOverworld().getDroppedItems()) {
-			System.out.println(item.toString());
+			System.out.println(item.toString(world.getForgeData()));
 		}
 	}
 }
