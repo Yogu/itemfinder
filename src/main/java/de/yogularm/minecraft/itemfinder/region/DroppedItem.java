@@ -32,6 +32,10 @@ public class DroppedItem {
 	
 	@Override
 	public String toString() {
-		return count + "x " + id + " @ " + position;
+		String name = ItemNames.getName(id, damage);
+		if (count > 1)
+			name = count + "x " + name;
+		name += " @ " + position;
+		return name;
 	}
 }
