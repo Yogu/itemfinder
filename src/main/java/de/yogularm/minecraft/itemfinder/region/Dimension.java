@@ -33,7 +33,6 @@ public class Dimension {
 				if (!fileNameMatcher.matches())
 					continue;
 
-				System.out.println("Reading " + regionPath);
 				int regionX = Integer.parseInt(fileNameMatcher.group(1));
 				int regionZ = Integer.parseInt(fileNameMatcher.group(2));
 
