@@ -5,41 +5,38 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.nio.file.Path;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.zip.InflaterInputStream;
 
 
 public class AnvilReader implements AutoCloseable {
-	private DataInputStream stream;
-	private int currentPosition;
+	private RandomAccessFile file;
 
 	private static final int SECTOR_SIZE = 4096;
+	private static final int METADATA_SIZE = 4096 * 2;
 
 	/**
 	 * Stores the positions where there are chunks
 	 */
 	private SortedSet<Integer> chunkPositions;
 
-	public AnvilReader(InputStream stream) throws IOException {
-		this.stream = new DataInputStream(stream);
+	public AnvilReader(Path path) throws IOException {
+		file = new RandomAccessFile(path.toFile(), "r");
 		readMetadata();
 	}
 
 	private void readMetadata() throws IOException {
 		chunkPositions = new TreeSet<>();
 		for (int i = 0; i < 1024; i++) {
-			int pos = stream.readByte() * 0x1000 + stream.readByte() * 0x100
-					+ stream.readByte();
-			stream.skip(1); // length
+			int pos = file.readUnsignedByte() * 0x10000 + file.readUnsignedByte() * 0x100
+					+ file.readUnsignedByte();
+			file.readByte(); // length
 			if (pos > 0) // 0 means chunk does not exist
 				chunkPositions.add(pos);
 		}
-
-		// skip timestamps
-		stream.skip(4096);
-
-		currentPosition = 2 * 4096; // after metadata
 	}
 
 	public InputStream readChunkColumn() throws IOException {
@@ -50,14 +47,13 @@ public class AnvilReader implements AutoCloseable {
 		chunkPositions.remove(nextChunkPosition);
 
 		// skip to next chunk
-		stream.skip(nextChunkPosition * SECTOR_SIZE - currentPosition);
+		file.seek((long)nextChunkPosition * SECTOR_SIZE);
 
 		// read the raw data
-		int length = stream.readInt() - 1; // one byte for the compression
-		byte compression = stream.readByte();
+		int length = file.readInt() - 1; // one byte for the compression
+		byte compression = file.readByte();
 		byte[] rawChunkData = new byte[length];
-		stream.readFully(rawChunkData);
-		currentPosition = nextChunkPosition * SECTOR_SIZE + length + 5;
+		file.readFully(rawChunkData);
 
 		// get a stream for the uncompressed data
 		InputStream rawChunkStream = new ByteArrayInputStream(rawChunkData);
@@ -104,6 +100,6 @@ public class AnvilReader implements AutoCloseable {
 
 	@Override
 	public void close() throws IOException {
-		stream.close();
+		file.close();
 	}
 }

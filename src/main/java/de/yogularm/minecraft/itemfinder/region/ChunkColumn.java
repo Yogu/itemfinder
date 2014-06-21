@@ -26,7 +26,6 @@ public class ChunkColumn {
 		if (level.getTag("xPos") != null) {
 			column.x = level.getInteger("xPos");
 			column.z = level.getInteger("zPos");
-			System.out.println((column.x % 32) + " " + (column.z % 32));
 		}
 		
 		Vector chunkPosition = new Vector(column.x * 16, 0, column.z * 16);

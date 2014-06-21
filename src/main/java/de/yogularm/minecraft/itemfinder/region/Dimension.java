@@ -38,8 +38,7 @@ public class Dimension {
 				int regionX = Integer.parseInt(fileNameMatcher.group(1));
 				int regionZ = Integer.parseInt(fileNameMatcher.group(2));
 
-				try (AnvilReader reader = new AnvilReader(new FileInputStream(
-						regionPath.toFile()))) {
+				try (AnvilReader reader = new AnvilReader(regionPath)) {
 
 					int i = 0;
 					while (reader.hasMore()) {
