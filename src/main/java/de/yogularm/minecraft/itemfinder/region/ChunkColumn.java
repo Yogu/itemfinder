@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableList.Builder;
 public class ChunkColumn {
 	private int x;
 	private int z;
+	private long lastUpdate;
 	private List<DroppedItem> items;
 	
 	private ChunkColumn() {
@@ -23,16 +24,15 @@ public class ChunkColumn {
 		TagCompound tag = NBTUtils.load(stream);
 		TagCompound level = tag.getCompound("Level");
 		
-		if (level.getTag("xPos") != null) {
-			column.x = level.getInteger("xPos");
-			column.z = level.getInteger("zPos");
-		}
+		column.x = level.getInteger("xPos");
+		column.z = level.getInteger("zPos");
+		column.lastUpdate = level.getLong("LastUpdate");
 		
 		Builder<DroppedItem> items = new Builder<>();
 		for (TagCompound entity : level.getList("Entities", TagCompound.class)) {
 			if (!entity.getString("id").equals("Item"))
 				continue;
-			items.add(new DroppedItem(entity, forgeData));
+			items.add(new DroppedItem(entity, forgeData, column));
 		}
 		column.items = items.build();
 		
@@ -45,5 +45,9 @@ public class ChunkColumn {
 	
 	public List<DroppedItem> getDroppedItems() {
 		return items;
+	}
+	
+	public long getLastUpdate() {
+		return lastUpdate;
 	}
 }
