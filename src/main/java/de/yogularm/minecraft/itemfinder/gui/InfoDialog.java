@@ -19,7 +19,7 @@ public class InfoDialog {
 			"have been recently dropped at the top, so if you just died, your stuff " +
 			"should be easy to find. The coordinates will then tell you exactly where you " +
 			"have to look for them. Keep an eye on the age, if it reaches 5:00, " +
-			"the item will despawn).</p>" +
+			"the item will despawn.</p>" +
 			"<p>Tested with Minecraft 1.6 and 1.7 as well as TerraFirmaCraft. " +
 			"If you're having trouble, write in the forum or open an issue on github.</p>" +
 			"<p>Source code available on <a href=\"https://github.com/Yogu/itemfinderAvailable\">GitHub</a> " +
