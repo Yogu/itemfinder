@@ -4,7 +4,7 @@
 
 	<groupId>de.yogularm.minecraft</groupId>
 	<artifactId>itemfinder</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>jar</packaging>
 
 	<name>itemfinder</name>
@@ -85,6 +85,8 @@
 							<mainClass>de.yogularm.minecraft.itemfinder.App</mainClass>
 						</manifest>
 					</archive>
+       				<finalName>${project.artifactId}-v${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
 					<execution>
