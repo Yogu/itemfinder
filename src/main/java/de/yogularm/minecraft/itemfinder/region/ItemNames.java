@@ -15,7 +15,7 @@ public class ItemNames {
 		try {
 			itemNames = new HashMap<>();
 			try (InputStream stream = ItemNames.class
-					.getResourceAsStream("../resources/items.tsv")) {
+					.getResourceAsStream("items.tsv")) {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(stream));
 				while (true) {
