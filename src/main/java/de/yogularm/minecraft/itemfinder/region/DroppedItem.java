@@ -1,46 +1,58 @@
 package de.yogularm.minecraft.itemfinder.region;
 
+import java.io.IOException;
 
+import com.evilco.mc.nbt.tag.TagCompound;
 
 public class DroppedItem {
 	private int id;
 	private int damage;
 	private int count;
-	public Vector position;
+	private int age;
+	private Vector position;
+	private String name;
 
-	public DroppedItem(int id, int damage, int count, Vector position) {
-		this.id = id;
-		this.damage = damage;
-		this.count = count;
-		this.position = position;
+	public DroppedItem(TagCompound entityTag, ItemNameProvider nameProvider) throws IOException {
+		TagCompound item = entityTag.getCompound("Item");
+
+		position = new Vector(entityTag.getDoubleArray("Pos"));
+		age = entityTag.getShort("Age");
+		id = item.getShort("id");
+		damage = item.getShort("Damage");
+		count = item.getByte("Count");
+		name = nameProvider.getItemName(id, damage);
 	}
 
 	public int getID() {
 		return id;
 	}
-	
+
 	public int getDamage() {
 		return damage;
 	}
-	
+
 	public int getCount() {
 		return count;
 	}
-	
+
 	public Vector getPosition() {
 		return position;
 	}
 	
-	@Override
-	public String toString() {
-		return toString(new VanillaItemNameProvider());
+	public int getAge() {
+		return age;
 	}
 	
-	public String toString(ItemNameProvider itemNameProvider) {
-		String name = itemNameProvider.getItemName(id, damage);
-		if (count > 1)
-			name = count + "x " + name;
-		name += " @ " + position;
+	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String toString() {
+		String str = name;
+		if (count > 1)
+			str = count + "x " + str;
+		str += " @ " + position + " (age: " + age + ")";
+		return str;
 	}
 }

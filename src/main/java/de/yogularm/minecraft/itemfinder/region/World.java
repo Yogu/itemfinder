@@ -16,15 +16,15 @@ public class World {
 	public World(Path path) throws IOException {
 		forgeData = new ForgeData(path.resolve("level.dat"));
 		
-		overworld = new Dimension(path.resolve("region"));
+		overworld = new Dimension(path.resolve("region"), forgeData);
 		
 		Path p = path.resolve("DIM-1").resolve("region");
 		if (Files.isDirectory(p))
-			nether = new Dimension(p);
+			nether = new Dimension(p, forgeData);
 
 		p = path.resolve("DIM1").resolve("region");
 		if (Files.isDirectory(p))
-			end = new Dimension(p);
+			end = new Dimension(p, forgeData);
 	}
 	
 	public Dimension getOverworld() {

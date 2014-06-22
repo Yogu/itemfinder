@@ -30,8 +30,17 @@ public class ForgeData implements ItemNameProvider {
 	}
 
 	public String getItemName(int itemID, int damageValue) {
+		if (ItemNames.getNameProvider().hasNameFor(itemID))
+			return ItemNames.getNameProvider().getItemName(itemID, damageValue);
+		
 		if (itemNames.containsKey(itemID))
 			return itemNames.get(itemID);
-		return ItemNames.getName(itemID, damageValue);
+
+		return "Item " + itemID;
+	}
+
+	@Override
+	public boolean hasNameFor(int itemID) {
+		return itemNames.containsKey(itemID);
 	}
 }

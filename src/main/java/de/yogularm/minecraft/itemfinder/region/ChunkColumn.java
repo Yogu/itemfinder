@@ -16,7 +16,7 @@ public class ChunkColumn {
 	private ChunkColumn() {
 	}
 	
-	public static ChunkColumn load(InputStream stream)
+	public static ChunkColumn load(InputStream stream, ForgeData forgeData)
 			throws IOException {
 		ChunkColumn column = new ChunkColumn();
 		
@@ -32,15 +32,7 @@ public class ChunkColumn {
 		for (TagCompound entity : level.getList("Entities", TagCompound.class)) {
 			if (!entity.getString("id").equals("Item"))
 				continue;
-			TagCompound item = entity.getCompound("Item");
-			
-			Vector position = new Vector(entity.getDoubleArray("Pos"));//.add(chunkPosition);
-			
-			items.add(new DroppedItem(
-					item.getShort("id"),
-					item.getShort("Damage"),
-					item.getByte("Count"),
-					position));
+			items.add(new DroppedItem(entity, forgeData));
 		}
 		column.items = items.build();
 		

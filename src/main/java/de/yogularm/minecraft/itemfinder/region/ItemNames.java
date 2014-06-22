@@ -9,7 +9,8 @@ import java.util.Map;
 
 public class ItemNames {
 	private static Map<Integer, String> itemNames;
-
+	private static ItemNameProvider nameProvider;
+	
 	static {
 		try {
 			itemNames = new HashMap<>();
@@ -32,16 +33,28 @@ public class ItemNames {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
 
-	public static String getName(int itemID, int damageValue) {
-		int key = getKey(itemID, damageValue);
-		if (itemNames.containsKey(key))
-			return itemNames.get(key);
-		key = getKey(itemID, 0);
-		if (itemNames.containsKey(key))
-			return itemNames.get(key);
-		return "Item " + itemID;
+		nameProvider = new ItemNameProvider() {
+			@Override
+			public String getItemName(int itemID, int damageValue) {
+				int key = getKey(itemID, damageValue);
+				if (itemNames.containsKey(key))
+					return itemNames.get(key);
+				key = getKey(itemID, 0);
+				if (itemNames.containsKey(key))
+					return itemNames.get(key);
+				return "Item " + itemID;
+			}
+
+			@Override
+			public boolean hasNameFor(int itemID) {
+				return itemNames.containsKey(getKey(itemID, 0));
+			}
+		};
+	}
+	
+	public static ItemNameProvider getNameProvider() {
+		return nameProvider;
 	}
 	
 	private static int getKey(int itemID, int damageValue) {
