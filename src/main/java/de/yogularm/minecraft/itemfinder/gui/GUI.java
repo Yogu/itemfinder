@@ -1,7 +1,6 @@
 package de.yogularm.minecraft.itemfinder.gui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Observable;
@@ -10,10 +9,12 @@ import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
 
 import de.yogularm.minecraft.itemfinder.profiles.MinecraftSave;
 import de.yogularm.minecraft.itemfinder.profiles.ProfilesCollection;
-import de.yogularm.minecraft.itemfinder.region.World;
 
 public class GUI {
 	private JFrame frame;
@@ -21,6 +22,7 @@ public class GUI {
 	private WorldSelector selector;
 
 	public GUI() {
+		setLookAndFeel();
 		initUI();
 
 		try {
@@ -35,9 +37,11 @@ public class GUI {
 
 	private void initUI() {
 		frame = new JFrame("itemfinder");
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frame.setContentPane(mainPanel);
-		frame.setSize(600, 400);
+		frame.setSize(950, 700);
+		frame.setLocationRelativeTo(null); // center
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		saveViewer = new SaveViewer();
@@ -59,5 +63,18 @@ public class GUI {
 
 	public void show() {
 		frame.setVisible(true);
+	}
+	
+	private void setLookAndFeel() {
+		try {
+			// Set System L&F
+		    UIManager.setLookAndFeel(
+		        UIManager.getSystemLookAndFeelClassName());
+		} 
+		catch (UnsupportedLookAndFeelException|ClassNotFoundException|InstantiationException|
+				IllegalAccessException e) {
+			e.printStackTrace();
+			//just use the default look and feel
+		}
 	}
 }

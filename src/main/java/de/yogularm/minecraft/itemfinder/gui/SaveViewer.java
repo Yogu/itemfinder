@@ -26,7 +26,7 @@ public class SaveViewer {
 	}
 	
 	private void initUI() {
-		component = new JPanel(new BorderLayout());
+		component = new JPanel(new BorderLayout(10, 10));
 		progressLabel = new JLabel("Please select a world");
 		component.add(progressLabel, BorderLayout.NORTH);
 		itemList = new ItemList();

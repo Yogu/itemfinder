@@ -8,6 +8,7 @@ import de.yogularm.minecraft.itemfinder.region.World;
 public class MinecraftSave {
 	private Path path;
 	private String gameDirName;
+	private World cachedWorld;
 		
 	public MinecraftSave(Path path, String gameDirName) {
 		this.path = path;
@@ -15,7 +16,9 @@ public class MinecraftSave {
 	}
 	
 	public World loadWorld() throws IOException, InterruptedException {
-		return new World(path);
+		if (cachedWorld == null)
+			cachedWorld = new World(path);
+		return cachedWorld;
 	}
 	
 	public String getWorldName() {

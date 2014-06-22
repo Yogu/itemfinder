@@ -7,17 +7,18 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.jdesktop.swingx.JXTable;
+
 import de.yogularm.minecraft.itemfinder.region.DroppedItem;
 
 public class ItemList {
 	private Component component;
-	private JTable table;
+	private JXTable table;
 	private ItemTableModel model;
 	private TableRowSorter<ItemTableModel> sorter;
 
@@ -27,7 +28,7 @@ public class ItemList {
 
 	private void initUI() {
 		model = new ItemTableModel();
-		table = new JTable(model);
+		table = new JXTable(model);
 		sorter = new TableRowSorter<>(model);
 		table.setRowSorter(sorter);
 		sorter.setSortKeys(Arrays.asList(
@@ -45,12 +46,15 @@ public class ItemList {
 				return Integer.compare(o1, o2);
 			}
 		});
+		
+		table.getColumnModel().getColumn(0).setWidth(200);
 
 		component = new JScrollPane(table);
 	}
 
 	public void setItems(List<DroppedItem> items) {
 		model.setItems(items);
+		table.packAll(); // adjust column widths
 	}
 
 	public Component getComponent() {
@@ -61,7 +65,7 @@ public class ItemList {
 		private static final long serialVersionUID = 1904800093497922295L;
 
 		private static final String[] COLUMNS = new String[] { "Item Name",
-				"Stack Size", "Location", "Age", "Last Chunk Update" };
+				"Stack Size", "Location", "Age", "Chunk Update" };
 
 		private List<DroppedItem> items;
 
