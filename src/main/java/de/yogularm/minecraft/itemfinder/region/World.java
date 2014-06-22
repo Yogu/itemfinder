@@ -11,10 +11,10 @@ public class World {
 	private Dimension overworld;
 	private Dimension nether;
 	private Dimension end;
-	private ForgeData forgeData;
+	private LevelInfo forgeData;
 
 	public World(Path path) throws IOException, InterruptedException {
-		forgeData = new ForgeData(path.resolve("level.dat"));
+		forgeData = new LevelInfo(path.resolve("level.dat"));
 		
 		overworld = new Dimension(path.resolve("region"), forgeData);
 		
@@ -39,7 +39,7 @@ public class World {
 		return end;
 	}
 	
-	public ForgeData getForgeData() {
+	public LevelInfo getForgeData() {
 		return forgeData;
 	}
 }

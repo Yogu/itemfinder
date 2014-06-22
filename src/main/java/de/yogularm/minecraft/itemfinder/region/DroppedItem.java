@@ -12,8 +12,9 @@ public class DroppedItem {
 	private Vector position;
 	private String name;
 	private long lastChunkUpdate;
+	private int relativeChunkUpdateTime;
 
-	public DroppedItem(TagCompound entityTag, ItemNameProvider nameProvider,
+	public DroppedItem(TagCompound entityTag, LevelInfo levelInfo,
 			ChunkColumn chunkColumn) throws IOException {
 		TagCompound item = entityTag.getCompound("Item");
 
@@ -22,8 +23,9 @@ public class DroppedItem {
 		id = item.getShort("id");
 		damage = item.getShort("Damage");
 		count = item.getByte("Count");
-		name = nameProvider.getItemName(id, damage);
+		name = levelInfo.getItemName(id, damage);
 		lastChunkUpdate = chunkColumn.getLastUpdate();
+		relativeChunkUpdateTime = (int)(levelInfo.getCurrentTick() - lastChunkUpdate) / 20;
 	}
 
 	public int getID() {
@@ -52,6 +54,10 @@ public class DroppedItem {
 	
 	public long getLastChunkUpdate() {
 		return lastChunkUpdate;
+	}
+	
+	public int getRelativeChunkUpdateTime() {
+		return relativeChunkUpdateTime;
 	}
 
 	@Override

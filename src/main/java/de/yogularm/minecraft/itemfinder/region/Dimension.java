@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 public class Dimension {
 	private List<DroppedItem> items = new ArrayList<>();
 	private Path path;
-	private ForgeData forgeData;
+	private LevelInfo levelInfo;
 
-	public Dimension(Path regionPath, ForgeData forgeData) throws IOException, InterruptedException {
+	public Dimension(Path regionPath, LevelInfo levleInfo) throws IOException, InterruptedException {
 		this.path = regionPath;
-		this.forgeData = forgeData;
+		this.levelInfo = levleInfo;
 		loadRegions();
 	}
 
@@ -38,7 +38,7 @@ public class Dimension {
 				try (AnvilReader reader = new AnvilReader(regionPath)) {
 					while (reader.hasMore()) {
 						try (InputStream chunkStream = reader.readChunkColumn()) {
-							ChunkColumn column = ChunkColumn.load(chunkStream, forgeData);
+							ChunkColumn column = ChunkColumn.load(chunkStream, levelInfo);
 							items.addAll(column.getDroppedItems());
 						}
 						if (Thread.currentThread().isInterrupted())

@@ -8,13 +8,18 @@ import java.util.Map;
 
 import com.evilco.mc.nbt.tag.TagCompound;
 
-public class ForgeData implements ItemNameProvider {
+public class LevelInfo implements ItemNameProvider {
 	private Map<Integer, String> itemNames;
-
-	public ForgeData(Path levelDatPath) throws IOException {
+	private long currentTick;
+	
+	public LevelInfo(Path levelDatPath) throws IOException {
+		TagCompound tag = NBTUtils.load(levelDatPath);
+		
+		TagCompound data = tag.getCompound("Data");
+		currentTick = data.getLong("Time");
+		
 		itemNames = new HashMap<>();
 		
-		TagCompound tag = NBTUtils.load(levelDatPath);
 		if (tag.getTag("FML") != null) {
 			TagCompound fml = tag.getCompound("FML");
 			if (fml.getTag("ModItemData") != null) {
@@ -27,6 +32,7 @@ public class ForgeData implements ItemNameProvider {
 				}
 			}
 		}
+		
 	}
 
 	public String getItemName(int itemID, int damageValue) {
@@ -37,6 +43,10 @@ public class ForgeData implements ItemNameProvider {
 			return itemNames.get(itemID);
 
 		return "Item " + itemID;
+	}
+	
+	public long getCurrentTick() {
+		return currentTick;
 	}
 
 	@Override

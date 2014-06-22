@@ -1,12 +1,16 @@
 package de.yogularm.minecraft.itemfinder.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -43,6 +47,18 @@ public class GUI {
 		frame.setSize(950, 700);
 		frame.setLocationRelativeTo(null); // center
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel topBar = new JPanel(new BorderLayout(10, 10));
+		topBar.add(new JLabel("Just died in Minecraft and can't find your stuff? I'll tell you exactly where it is!"), BorderLayout.CENTER);
+		JButton helpButton = new JButton("More Info");
+		topBar.add(helpButton, BorderLayout.EAST);
+		mainPanel.add(topBar, BorderLayout.NORTH);
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				InfoDialog.show();
+			}
+		});
 
 		saveViewer = new SaveViewer();
 		selector = new WorldSelector();

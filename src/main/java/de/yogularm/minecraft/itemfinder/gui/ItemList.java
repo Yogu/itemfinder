@@ -3,7 +3,6 @@ package de.yogularm.minecraft.itemfinder.gui;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -34,18 +33,6 @@ public class ItemList {
 		sorter.setSortKeys(Arrays.asList(
 				new RowSorter.SortKey(4, SortOrder.DESCENDING),
 				new RowSorter.SortKey(3, SortOrder.ASCENDING)));
-		
-		// items with age 0 should be at the bottom
-		sorter.setComparator(3, new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				if (o1 == 0)
-					o1 = Integer.MAX_VALUE;
-				if (o2 == 0)
-					o2 = Integer.MAX_VALUE;
-				return Integer.compare(o1, o2);
-			}
-		});
 		
 		table.getColumnModel().getColumn(0).setWidth(200);
 
@@ -106,9 +93,11 @@ public class ItemList {
 			case 2:
 				return item.getPosition().toRoundedString();
 			case 3:
-				return item.getAge();
+				// there are items with age 0 which should be displayed at the bottom
+				// HourSecond will render Integer.MAX_VALUE as --
+				return new HourSecond(item.getAge() == 0 ? Integer.MAX_VALUE : item.getAge() / 20);
 			case 4:
-				return item.getLastChunkUpdate();
+				return new RelativeTime(- item.getRelativeChunkUpdateTime());
 			default:
 				return "";
 			}
@@ -124,9 +113,9 @@ public class ItemList {
 			case 2:
 				return String.class;
 			case 3:
-				return Integer.class;
+				return HourSecond.class;
 			case 4:
-				return Integer.class;
+				return RelativeTime.class;
 			default:
 				return null;
 			}
