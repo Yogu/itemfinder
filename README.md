@@ -3,6 +3,10 @@ itemfinder
 
 Just died in Minecraft, and can't find your stuff? This tool will show it to you.
 
+[Download latest version](https://github.com/Yogu/itemfinder/releases/latest)
+
+Simply open with Java, no installation required.
+
 How it works
 ------------
 
@@ -13,6 +17,8 @@ tell you exactly where you have to look for them. Keep an eye on the age, if it 
 the item will despawn.
 
 ![screenshot](docs/screenshot.png)
+
+![screenshot](docs/screenshot-windows.png)
 
 Building
 --------
