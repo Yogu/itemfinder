@@ -28,15 +28,19 @@ public class GUI {
 	public GUI() {
 		setLookAndFeel();
 		initUI();
-
+		
+		ProfilesCollection profiles;
 		try {
-			ProfilesCollection profiles = new ProfilesCollection(Paths.get(
-					System.getProperty("user.home")).resolve(".minecraft"));
-			selector.setSaves(profiles.getSaves());
+			profiles = ProfilesCollection.getDefault();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
-					"Error loading minecraft profiles: " + e.getMessage());
+					"Error loading minecraft profiles: " + e.getMessage() + 
+					"  You can still open individual saves using the Browse... button.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			profiles = new ProfilesCollection();
 		}
+
+		selector.setSaves(profiles.getSaves());
 	}
 
 	private void initUI() {
