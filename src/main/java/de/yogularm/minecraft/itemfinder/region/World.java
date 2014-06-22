@@ -13,7 +13,7 @@ public class World {
 	private Dimension end;
 	private ForgeData forgeData;
 
-	public World(Path path) throws IOException {
+	public World(Path path) throws IOException, InterruptedException {
 		forgeData = new ForgeData(path.resolve("level.dat"));
 		
 		overworld = new Dimension(path.resolve("region"), forgeData);

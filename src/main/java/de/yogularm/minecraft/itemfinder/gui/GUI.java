@@ -1,5 +1,6 @@
 package de.yogularm.minecraft.itemfinder.gui;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,7 +17,7 @@ import de.yogularm.minecraft.itemfinder.region.World;
 
 public class GUI {
 	private JFrame frame;
-	private ItemList itemList;
+	private SaveViewer saveViewer;
 	private WorldSelector selector;
 
 	public GUI() {
@@ -34,12 +35,12 @@ public class GUI {
 
 	private void initUI() {
 		frame = new JFrame("itemfinder");
-		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
+		JPanel mainPanel = new JPanel(new BorderLayout());
 		frame.setContentPane(mainPanel);
 		frame.setSize(600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		itemList = new ItemList();
+		saveViewer = new SaveViewer();
 		selector = new WorldSelector();
 
 		selector.addObserver(new Observer() {
@@ -47,21 +48,13 @@ public class GUI {
 			public void update(Observable arg0, Object arg1) {
 				MinecraftSave save = selector.getSelectedSave();
 				if (save != null) {
-					World world;
-					try {
-						world = save.loadWorld();
-						itemList.setItems(world.getOverworld()
-								.getDroppedItems());
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(null,
-								"Error loading world: " + e.getMessage());
-					}
+					saveViewer.setSave(save);
 				}
 			}
 		});
 
-		mainPanel.add(selector.getComponent());
-		mainPanel.add(itemList.getComponent());
+		mainPanel.add(selector.getComponent(), BorderLayout.WEST);
+		mainPanel.add(saveViewer.getComponent(), BorderLayout.CENTER);
 	}
 
 	public void show() {

@@ -38,7 +38,7 @@ public class ProfilesCollection {
 	private List<GameDir> getGameDirs() throws IOException {
 		Map<Path, List<String>> pathProfileNames = new HashMap<Path, List<String>>();
 		
-		pathProfileNames.put(rootDir, Arrays.asList("Minecraft Default Location"));
+		pathProfileNames.put(rootDir, Arrays.asList("Minecraft"));
 		
 		byte[] bytes = Files.readAllBytes(rootDir.resolve("launcher_profiles.json"));
 		String json = new String(bytes, Charset.forName("utf8"));

@@ -14,7 +14,7 @@ public class MinecraftSave {
 		this.gameDirName = gameDirName;
 	}
 	
-	public World loadWorld() throws IOException {
+	public World loadWorld() throws IOException, InterruptedException {
 		return new World(path);
 	}
 	
@@ -26,8 +26,12 @@ public class MinecraftSave {
 		return gameDirName;
 	}
 	
+	public String getDisplayName() {
+		return getWorldName() + " (" + getGameDirName() + ")";
+	}
+	
 	@Override
 	public String toString() {
-		return getWorldName() + " (" + getGameDirName() + ")";
+		return getDisplayName();
 	}
 }

@@ -13,7 +13,7 @@ import de.yogularm.minecraft.itemfinder.region.DroppedItem;
 import de.yogularm.minecraft.itemfinder.region.World;
 
 public class ItemFinderCli {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		// path via command-line argument
 		if (args.length > 0 && Files.isDirectory(Paths.get(args[0])))
 			processSave(Paths.get(args[0]));
@@ -21,7 +21,7 @@ public class ItemFinderCli {
 			showMinecraftWorlds();
 	}
 
-	private static void showMinecraftWorlds() throws IOException {
+	private static void showMinecraftWorlds() throws IOException, InterruptedException {
 		Path homePath = Paths.get(System.getProperty("user.home"));
 		Path savesPath = homePath.resolve(".minecraft").resolve("saves");
 		if (!Files.isDirectory(savesPath)) {
@@ -46,7 +46,7 @@ public class ItemFinderCli {
 		}
 	}
 
-	private static void processSave(Path location) throws IOException {
+	private static void processSave(Path location) throws IOException, InterruptedException {
 		System.out.println("Loading world in " + location);
 		World world;
 		try {

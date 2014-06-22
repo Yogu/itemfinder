@@ -15,13 +15,13 @@ public class Dimension {
 	private Path path;
 	private ForgeData forgeData;
 
-	public Dimension(Path regionPath, ForgeData forgeData) throws IOException {
+	public Dimension(Path regionPath, ForgeData forgeData) throws IOException, InterruptedException {
 		this.path = regionPath;
 		this.forgeData = forgeData;
 		loadRegions();
 	}
 
-	public void loadRegions() throws IOException {
+	public void loadRegions() throws IOException, InterruptedException {
 		if (!Files.isDirectory(path))
 			throw new InvalidSaveFormatException(
 					"region directory does not exist");
@@ -41,8 +41,12 @@ public class Dimension {
 							ChunkColumn column = ChunkColumn.load(chunkStream, forgeData);
 							items.addAll(column.getDroppedItems());
 						}
+						if (Thread.currentThread().isInterrupted())
+							throw new InterruptedException();
 					}
 				}
+				if (Thread.currentThread().isInterrupted())
+					throw new InterruptedException();
 			}
 		}
 	}
