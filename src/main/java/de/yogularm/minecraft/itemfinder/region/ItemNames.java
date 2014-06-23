@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class ItemNames {
 	private static Map<Integer, String> itemNames;
+	private static Map<String, Integer> ordinalsOfIDs;
 	private static ItemNameProvider nameProvider;
 	
 	static {
@@ -28,6 +29,23 @@ public class ItemNames {
 					int damageValue = Integer.parseInt(parts[1]);
 					String name = parts[2];
 					itemNames.put(getKey(itemID, damageValue), name);
+				}
+			}
+
+			ordinalsOfIDs = new HashMap<>();
+			try (InputStream stream = ItemNames.class
+					.getResourceAsStream("item-ids.tsv")) {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(stream));
+				while (true) {
+					String line = reader.readLine();
+					if (line == null || line.equals(""))
+						break;
+
+					String parts[] = line.split("\\t");
+					int ordinal = Integer.parseInt(parts[0]);
+					String id = parts[1];
+					ordinalsOfIDs.put(id, ordinal);
 				}
 			}
 		} catch (IOException e) {
@@ -55,6 +73,10 @@ public class ItemNames {
 	
 	public static ItemNameProvider getNameProvider() {
 		return nameProvider;
+	}
+	
+	public static Integer getOrdinalFromID(String id) {
+		return ordinalsOfIDs.get(id);
 	}
 	
 	private static int getKey(int itemID, int damageValue) {

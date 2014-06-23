@@ -3,6 +3,7 @@ package de.yogularm.minecraft.itemfinder.region;
 import java.io.IOException;
 
 import com.evilco.mc.nbt.tag.TagCompound;
+import com.evilco.mc.nbt.tag.TagShort;
 
 public class DroppedItem {
 	private int id;
@@ -20,20 +21,23 @@ public class DroppedItem {
 
 		position = new Vector(entityTag.getDoubleArray("Pos"));
 		age = entityTag.getShort("Age");
-		id = item.getShort("id");
+		if (item.getTag("id") instanceof TagShort) {
+			id = item.getShort("id");
+		} else {
+			String strID = item.getString("id");
+			Integer ordinalID = ItemNames.getOrdinalFromID(strID);
+			if (ordinalID == null) {
+				id = 0;
+				name = strID;
+			} else
+				id = ordinalID;
+		}
+		if (id != 0)
+			name = levelInfo.getItemName(id, damage);
 		damage = item.getShort("Damage");
 		count = item.getByte("Count");
-		name = levelInfo.getItemName(id, damage);
 		lastChunkUpdate = chunkColumn.getLastUpdate();
 		relativeChunkUpdateTime = (int)(levelInfo.getCurrentTick() - lastChunkUpdate) / 20;
-	}
-
-	public int getID() {
-		return id;
-	}
-
-	public int getDamage() {
-		return damage;
 	}
 
 	public int getCount() {
