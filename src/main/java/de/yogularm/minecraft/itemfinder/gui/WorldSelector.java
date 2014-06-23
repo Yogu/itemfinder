@@ -23,6 +23,7 @@ public class WorldSelector extends Observable {
 	private JPanel component;
 	private JList<World> list;
 	private DefaultListModel<World> model;
+	private World lastSelection;
 
 	public WorldSelector() {
 		initUI();
@@ -50,8 +51,11 @@ public class WorldSelector extends Observable {
 				new ListSelectionListener() {
 					@Override
 					public void valueChanged(ListSelectionEvent arg0) {
-						setChanged();
-						notifyObservers();
+						if (lastSelection != getSelectedWorld()) {
+							lastSelection = getSelectedWorld();
+							setChanged();
+							notifyObservers();
+						}
 					}
 				});
 
