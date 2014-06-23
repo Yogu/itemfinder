@@ -36,12 +36,13 @@ public class ProfilesCollection {
 	}
 
 	public static ProfilesCollection getDefault() throws IOException {
+		// Linux
 		Path path = Paths.get(System.getProperty("user.home")).resolve(
 				".minecraft");
 		if (Files.isDirectory(path))
 			return new ProfilesCollection(path);
 
-		// linux
+		// Windows
 		String appdata = System.getenv("APPDATA");
 		if (appdata != null) {
 			path = Paths.get(appdata).resolve(".minecraft");
@@ -49,6 +50,12 @@ public class ProfilesCollection {
 				return new ProfilesCollection(path);
 		}
 
+		// Mac OS
+		path = Paths.get(System.getProperty("user.home")).resolve("Library")
+				.resolve("Application Support").resolve("minecraft");
+		if (Files.isDirectory(path))
+			return new ProfilesCollection(path);
+		
 		throw new IOException("Unable to find your minecraft profile.");
 	}
 
