@@ -17,7 +17,8 @@ public class GameDir {
 			try (DirectoryStream<Path> ds = Files.newDirectoryStream(savePath)) {
 				ImmutableList.Builder<MinecraftSave> builder = new ImmutableList.Builder<>();
 				for (Path worldPath : ds) {
-					builder.add(new MinecraftSave(worldPath, name));
+					if (Files.isDirectory(worldPath))
+						builder.add(new MinecraftSave(worldPath, name));
 				}
 				saves = builder.build();
 			}
