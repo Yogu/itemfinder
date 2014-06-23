@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -17,6 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 import de.yogularm.minecraft.itemfinder.region.ProgressListener;
 import de.yogularm.minecraft.itemfinder.region.World;
@@ -57,7 +62,7 @@ public class WorldViewer {
 		progressBar.setMaximum(PROGRESS_RESOLUTION);
 		topRightPanel.add(progressBar);
 		
-		toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbar.setVisible(false);
 		topRightPanel.add(toolbar);
 		
@@ -77,7 +82,11 @@ public class WorldViewer {
 				loadWorld(world, true /* force reload */);
 			}
 		});
-		toolbar.add(reloadButton);
+		// spacing between button and combobox
+		JPanel reloadButtonPanel = new JPanel(new BorderLayout());
+		reloadButtonPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		reloadButtonPanel.add(reloadButton);
+		toolbar.add(reloadButtonPanel);
 
 		progressLabel = new JLabel("Please select a world");
 		progressLabel.setFont(progressLabel.getFont().deriveFont(Font.BOLD));
