@@ -13,7 +13,8 @@ import java.util.zip.InflaterInputStream;
 
 public class AnvilReader implements AutoCloseable {
 	private RandomAccessFile file;
-
+	private int chunkCount = 0;
+	
 	private static final int SECTOR_SIZE = 4096;
 
 	/**
@@ -28,13 +29,20 @@ public class AnvilReader implements AutoCloseable {
 
 	private void readMetadata() throws IOException {
 		chunkPositions = new TreeSet<>();
+		chunkCount = 0;
 		for (int i = 0; i < 1024; i++) {
 			int pos = file.readUnsignedByte() * 0x10000 + file.readUnsignedByte() * 0x100
 					+ file.readUnsignedByte();
 			file.readByte(); // length
-			if (pos > 0) // 0 means chunk does not exist
+			if (pos > 0) { // 0 means chunk does not exist
 				chunkPositions.add(pos);
+				chunkCount++;
+			}
 		}
+	}
+	
+	public int getChunkCount() {
+		return chunkCount;
 	}
 
 	public InputStream readChunkColumn() throws IOException {

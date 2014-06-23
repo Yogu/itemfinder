@@ -8,26 +8,28 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
+import de.yogularm.minecraft.itemfinder.region.World;
+
 public class GameDir {
-	private List<MinecraftSave> saves;
+	private List<World> worlds;
 	
 	public GameDir(Path path, String name) throws IOException {
 		Path savePath = path.resolve("saves");
 		if (Files.isDirectory(savePath)) {
 			try (DirectoryStream<Path> ds = Files.newDirectoryStream(savePath)) {
-				ImmutableList.Builder<MinecraftSave> builder = new ImmutableList.Builder<>();
+				ImmutableList.Builder<World> builder = new ImmutableList.Builder<>();
 				for (Path worldPath : ds) {
 					if (Files.isDirectory(worldPath))
-						builder.add(new MinecraftSave(worldPath, name));
+						builder.add(new World(worldPath, name));
 				}
-				saves = builder.build();
+				worlds = builder.build();
 			}
 		} else {
-			saves = ImmutableList.of();
+			worlds = ImmutableList.of();
 		}
 	}
 	
-	public List<MinecraftSave> getSaves() {
-		return saves;
+	public List<World> getWorlds() {
+		return worlds;
 	}
 }

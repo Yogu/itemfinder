@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,12 +16,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
-import de.yogularm.minecraft.itemfinder.profiles.MinecraftSave;
 import de.yogularm.minecraft.itemfinder.profiles.ProfilesCollection;
+import de.yogularm.minecraft.itemfinder.region.World;
 
 public class GUI {
 	private JFrame frame;
-	private SaveViewer saveViewer;
+	private WorldViewer worldViewer;
 	private WorldSelector selector;
 
 	public GUI() {
@@ -40,7 +39,7 @@ public class GUI {
 			profiles = new ProfilesCollection();
 		}
 
-		selector.setSaves(profiles.getSaves());
+		selector.setWorlds(profiles.getWorlds());
 	}
 
 	private void initUI() {
@@ -64,21 +63,21 @@ public class GUI {
 			}
 		});
 
-		saveViewer = new SaveViewer();
+		worldViewer = new WorldViewer();
 		selector = new WorldSelector();
 
 		selector.addObserver(new Observer() {
 			@Override
 			public void update(Observable arg0, Object arg1) {
-				MinecraftSave save = selector.getSelectedSave();
-				if (save != null) {
-					saveViewer.setSave(save);
+				World world = selector.getSelectedWorld();
+				if (world != null) {
+					worldViewer.setSave(world);
 				}
 			}
 		});
 
 		mainPanel.add(selector.getComponent(), BorderLayout.WEST);
-		mainPanel.add(saveViewer.getComponent(), BorderLayout.CENTER);
+		mainPanel.add(worldViewer.getComponent(), BorderLayout.CENTER);
 	}
 
 	public void show() {

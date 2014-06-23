@@ -17,12 +17,12 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import de.yogularm.minecraft.itemfinder.profiles.MinecraftSave;
+import de.yogularm.minecraft.itemfinder.region.World;
 
 public class WorldSelector extends Observable {
 	private JPanel component;
-	private JList<MinecraftSave> list;
-	private DefaultListModel<MinecraftSave> model;
+	private JList<World> list;
+	private DefaultListModel<World> model;
 
 	public WorldSelector() {
 		initUI();
@@ -32,14 +32,14 @@ public class WorldSelector extends Observable {
 		return component;
 	}
 
-	public void setSaves(List<MinecraftSave> saves) {
+	public void setWorlds(List<World> worlds) {
 		model.clear();
-		for (MinecraftSave save : saves) {
-			model.addElement(save);
+		for (World world : worlds) {
+			model.addElement(world);
 		}
 	}
 
-	public MinecraftSave getSelectedSave() {
+	public World getSelectedWorld() {
 		return list.getSelectedValue();
 	}
 
@@ -74,7 +74,7 @@ public class WorldSelector extends Observable {
 		dialog.setDialogTitle("Select your minecraft save directory");
 		if (dialog.showOpenDialog(component) == JFileChooser.APPROVE_OPTION) {
 			Path path = dialog.getSelectedFile().toPath();
-			model.addElement(new MinecraftSave(path, "Manually added"));
+			model.addElement(new World(path, "Manually added"));
 			list.setSelectedIndex(model.size() - 1);
 		}
 	}

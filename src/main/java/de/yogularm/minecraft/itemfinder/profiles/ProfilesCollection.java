@@ -17,22 +17,24 @@ import org.json.JSONObject;
 
 import com.google.common.collect.ImmutableList;
 
+import de.yogularm.minecraft.itemfinder.region.World;
+
 public class ProfilesCollection {
 	private Path rootDir;
-	private List<MinecraftSave> saves;
+	private List<World> worlds;
 
 	public ProfilesCollection() {
-		saves = ImmutableList.of();
+		worlds = ImmutableList.of();
 	}
 
 	public ProfilesCollection(Path rootDir) throws IOException {
 		this.rootDir = rootDir;
 
-		ImmutableList.Builder<MinecraftSave> builder = new ImmutableList.Builder<>();
+		ImmutableList.Builder<World> builder = new ImmutableList.Builder<>();
 		for (GameDir gameDir : getGameDirs()) {
-			builder.addAll(gameDir.getSaves());
+			builder.addAll(gameDir.getWorlds());
 		}
-		saves = builder.build();
+		worlds = builder.build();
 	}
 
 	public static ProfilesCollection getDefault() throws IOException {
@@ -55,18 +57,18 @@ public class ProfilesCollection {
 				.resolve("Application Support").resolve("minecraft");
 		if (Files.isDirectory(path))
 			return new ProfilesCollection(path);
-		
+
 		throw new IOException("Unable to find your minecraft profile.");
 	}
 
-	public List<MinecraftSave> getSaves() {
-		return saves;
+	public List<World> getWorlds() {
+		return worlds;
 	}
 
 	private List<GameDir> getGameDirs() throws IOException {
 		Map<Path, List<String>> pathProfileNames = new HashMap<Path, List<String>>();
 
-		pathProfileNames.put(rootDir, Arrays.asList("Minecraft"));
+		pathProfileNames.put(rootDir, Arrays.asList(""));
 
 		byte[] bytes = Files.readAllBytes(rootDir
 				.resolve("launcher_profiles.json"));
