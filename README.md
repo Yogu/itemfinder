@@ -3,7 +3,7 @@ itemfinder
 
 Just died in Minecraft, and can't find your stuff? This tool will show it to you.
 
-[Download latest version](https://github.com/Yogu/itemfinder/releases/latest)
+[Download latest version](https://github.com/Yogu/itemfinder/releases/latest)  
 [View forum topic](http://www.minecraftforum.net/topic/2766743-itemfinder-just-died-and-cant-find-your-stuff-this-tool-will-show-you-where-it-is/)
 
 Simply open with Java, no installation required. (On OS X, download the zip file, extract it and start the .app file).
