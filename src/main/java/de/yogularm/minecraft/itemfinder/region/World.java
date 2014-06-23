@@ -15,6 +15,7 @@ public class World {
 	private LevelInfo forgeData;
 	private Path path;
 	private String gameDirName;
+	private boolean isLoaded;
 
 	public World(Path path, String gameDirName) {
 		this.path = path;
@@ -39,6 +40,12 @@ public class World {
 			dimension.loadRegions(subListener);
 			progressReporter.incProgress(1.0 / dimensions.size());
 		}
+		
+		isLoaded = true;
+	}
+	
+	public boolean isLoaded() {
+		return isLoaded;
 	}
 	
 	private void tryAddDimension(ImmutableList.Builder<Dimension> list, String name, Path path) {

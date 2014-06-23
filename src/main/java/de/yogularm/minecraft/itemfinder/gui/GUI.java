@@ -53,7 +53,7 @@ public class GUI {
 		
 		JPanel topBar = new JPanel(new BorderLayout(10, 10));
 		topBar.add(new JLabel("Just died in Minecraft and can't find your stuff? I'll tell you exactly where it is!"), BorderLayout.CENTER);
-		JButton helpButton = new JButton("More Info");
+		JButton helpButton = new JButton("About");
 		topBar.add(helpButton, BorderLayout.EAST);
 		mainPanel.add(topBar, BorderLayout.NORTH);
 		helpButton.addActionListener(new ActionListener() {
@@ -71,7 +71,7 @@ public class GUI {
 			public void update(Observable arg0, Object arg1) {
 				World world = selector.getSelectedWorld();
 				if (world != null) {
-					worldViewer.setSave(world);
+					worldViewer.setWorld(world);
 				}
 			}
 		});
