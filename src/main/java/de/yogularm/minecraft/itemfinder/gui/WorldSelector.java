@@ -38,6 +38,7 @@ public class WorldSelector extends Observable {
 		for (World world : worlds) {
 			model.addElement(world);
 		}
+		checkChanged();
 	}
 
 	public World getSelectedWorld() {
@@ -51,11 +52,7 @@ public class WorldSelector extends Observable {
 				new ListSelectionListener() {
 					@Override
 					public void valueChanged(ListSelectionEvent arg0) {
-						if (lastSelection != getSelectedWorld()) {
-							lastSelection = getSelectedWorld();
-							setChanged();
-							notifyObservers();
-						}
+						checkChanged();
 					}
 				});
 
@@ -70,6 +67,14 @@ public class WorldSelector extends Observable {
 		component = new JPanel(new BorderLayout(10, 10));
 		component.add(new JScrollPane(list), BorderLayout.CENTER);
 		component.add(browseButton, BorderLayout.SOUTH);
+	}
+	
+	private void checkChanged() {
+		if (lastSelection != getSelectedWorld()) {
+			lastSelection = getSelectedWorld();
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	private void browseForDir() {

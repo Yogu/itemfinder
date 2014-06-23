@@ -1,7 +1,6 @@
 package de.yogularm.minecraft.itemfinder.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,6 +8,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +28,8 @@ public class WorldViewer {
 	private Thread loadThread;
 	private JProgressBar progressBar;
 	private World world;
+	private DimensionSelector dimensionSelector;
+	private JPanel toolbar;
 	
 	private static final int PROGRESS_RESOLUTION = 10000;
 	private JButton reloadButton;
@@ -44,7 +47,6 @@ public class WorldViewer {
 		
 		JPanel topPanel = new JPanel(new BorderLayout(10, 10));
 		component.add(topPanel, BorderLayout.NORTH);
-		topPanel.setPreferredSize(new Dimension(100, 35)); // enough space for button and progress bar
 		
 		JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topPanel.add(topRightPanel, BorderLayout.EAST);
@@ -55,15 +57,27 @@ public class WorldViewer {
 		progressBar.setMaximum(PROGRESS_RESOLUTION);
 		topRightPanel.add(progressBar);
 		
+		toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		toolbar.setVisible(false);
+		topRightPanel.add(toolbar);
+		
+		dimensionSelector = new DimensionSelector();
+		toolbar.add(dimensionSelector.getComponent());
+		dimensionSelector.addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object arg1) {
+				itemList.setItems(dimensionSelector.getSelection().getDroppedItems());
+			}
+		});
+		
 		reloadButton = new JButton("Reload");
-		reloadButton.setVisible(false);
 		reloadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadWorld(world, true /* force reload */);
 			}
 		});
-		topRightPanel.add(reloadButton);
+		toolbar.add(reloadButton);
 
 		progressLabel = new JLabel("Please select a world");
 		progressLabel.setFont(progressLabel.getFont().deriveFont(Font.BOLD));
@@ -116,9 +130,9 @@ public class WorldViewer {
 	private void onLoaded(World world) {
 		this.world = world;
 		finishProgress();	
-		reloadButton.setVisible(true);
+		toolbar.setVisible(true);
 		progressLabel.setText(world.getDisplayName());
-		itemList.setItems(world.getDimensions().get(0).getDroppedItems());
+		dimensionSelector.setDimensions(world.getDimensions());
 	}
 	
 	public void setWorld(final World world) {
@@ -128,7 +142,7 @@ public class WorldViewer {
 	private void initProgress() {
 		progressBar.setValue(0);
 		progressBar.setVisible(true);
-		reloadButton.setVisible(false);
+		toolbar.setVisible(false);
 	}
 	
 	private void finishProgress() {
