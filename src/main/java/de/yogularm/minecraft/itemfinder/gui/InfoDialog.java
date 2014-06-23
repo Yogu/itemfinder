@@ -21,11 +21,22 @@ public class InfoDialog {
 			"should be easy to find. The coordinates will then tell you exactly where you " +
 			"have to look for them. Keep an eye on the age, if it reaches 5:00, " +
 			"the item will despawn.</p>" +
-			"<p>Tested with Minecraft 1.6 and 1.7 as well as TerraFirmaCraft. " +
-			"If you're having trouble, write in the forum or open an issue on github.</p>" +
+			"<p>Tested with Minecraft 1.6, 1.7 and 1.8 as well as TerraFirmaCraft on Windows 7 and Ubuntu 14.04. " +
+			"If you're having trouble, write in the " + 
+			"<a href='http://www.minecraftforum.net/topic/2766743-itemfinder-just-died-and-cant-find-your-stuff-this-tool-will-show-you-where-it-is/'>forum thread</a> " +
+			"or open an issue on github.</p>" +
 			"<p>Source code available on <a href=\"https://github.com/Yogu/itemfinder\">GitHub</a> " +
 			"under the <a href=\"https://github.com/Yogu/itemfinder/blob/master/LICENSE\">Apache License 2.0</a>. " +
-			"Contributions are welcome!</p>";
+			"Contributions are welcome!</p>" +
+			"<p>Used libraries:</p><ul>" +
+			"<li><a href='https://github.com/Evil-Co/NBT-Lib'>NBT-Lib</a></li>" +
+			"<li><a href='http://www.json.org/java/'>json.org</a></li>" +
+			"<li><a href='http://commons.apache.org/'>Apache Commons</a></li>" +
+			"<li><a href='https://code.google.com/p/guava-libraries/'>Google Guava</a></li>" +
+			"<li><a href='https://swingx.java.net/'>swingx</a></li>" +
+			"</ul>";
+			
+			
 
 	public static void show() {
 		JEditorPane pane = new JEditorPane("text/html", TEXT);
