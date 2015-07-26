@@ -26,9 +26,9 @@ Building
 
 You need maven and java 1.7 installed. Then just do:
 
-    mvn clean install`
+    mvn clean install
 
 This will download the dependencies and create the file `target/itemfinder-xxx-jar-with-dependencies.jar`.
 Just open this file with java.
 
-Source Code available under Apache License 2.0. (C) Jan Melcher, 2014.
+Source Code available under Apache License 2.0. (C) Jan Melcher, 2015.
