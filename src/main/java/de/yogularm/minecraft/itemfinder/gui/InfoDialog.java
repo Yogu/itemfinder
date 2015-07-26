@@ -14,7 +14,7 @@ import javax.swing.event.HyperlinkListener;
 
 public class InfoDialog {
 	private static final String TEXT = "<html><body style=\"width: 500px; \">" +
-			"<p><b>Minecraft itemfinder © Jan Melcher, 2014.</b></p>" +
+			"<p><b>Minecraft itemfinder © Jan Melcher, 2015.</b></p>" +
 			"<p>This tool scans your minecraft worlds for items that lie on the ground " +
 			"and displays them in a sortable list. The default ordering shows items that " +
 			"have been recently dropped at the top, so if you just died, your stuff " +
