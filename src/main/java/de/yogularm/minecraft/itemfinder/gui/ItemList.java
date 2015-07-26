@@ -1,13 +1,16 @@
 package de.yogularm.minecraft.itemfinder.gui;
 
-import java.awt.Component;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JScrollPane;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -20,6 +23,7 @@ public class ItemList {
 	private JXTable table;
 	private ItemTableModel model;
 	private TableRowSorter<ItemTableModel> sorter;
+	private JPopupMenu contextMenu;
 
 	public ItemList() {
 		initUI();
@@ -37,6 +41,52 @@ public class ItemList {
 		table.getColumnModel().getColumn(0).setWidth(200);
 
 		component = new JScrollPane(table);
+
+		contextMenu = new JPopupMenu();
+		JMenuItem copyItem = new JMenuItem("Copy");
+		copyItem.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent actionEvent) {
+				Object text = model.getValueAt(sorter.convertRowIndexToModel(table.getSelectedRow()),
+						table.getSelectedColumn());
+				if (text == null) {
+					return;
+				}
+				Toolkit.getDefaultToolkit().getSystemClipboard()
+						.setContents(new StringSelection(text.toString()), null);
+			}
+		});
+	 	contextMenu.add(copyItem);
+
+		// manually show the popup menu so that the cell under the mouse is selected first
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				// Left mouse click
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					// Do something
+				}
+				// Right mouse click
+				else if (SwingUtilities.isRightMouseButton(e)) {
+					// get the coordinates of the mouse click
+					Point p = e.getPoint();
+
+					// get the row index that contains that coordinate
+					int rowNumber = table.rowAtPoint(p);
+
+					// Get the ListSelectionModel of the JTable
+					ListSelectionModel model = table.getSelectionModel();
+
+					// set the selected interval of rows. Using the "rowNumber"
+					// variable for the beginning and end selects only that one row.
+					model.setSelectionInterval(rowNumber, rowNumber);
+
+					int colNumber = table.columnAtPoint(p);
+					table.getColumnModel().getSelectionModel().setSelectionInterval(colNumber, colNumber);
+
+					contextMenu.show(table, p.x, p.y);
+				}
+			}
+		});
+
 	}
 
 	public void setItems(List<DroppedItem> items) {
