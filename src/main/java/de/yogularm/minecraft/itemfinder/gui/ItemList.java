@@ -34,6 +34,7 @@ public class ItemList {
 		table = new JXTable(model);
 		sorter = new TableRowSorter<>(model);
 		table.setRowSorter(sorter);
+		sorter.setComparator(0, new NaturalOrderComparator()); // for item name
 		sorter.setSortKeys(Arrays.asList(
 				new RowSorter.SortKey(4, SortOrder.DESCENDING),
 				new RowSorter.SortKey(3, SortOrder.ASCENDING)));
