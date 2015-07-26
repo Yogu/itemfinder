@@ -47,8 +47,7 @@ public class ItemList {
 		JMenuItem copyItem = new JMenuItem("Copy");
 		copyItem.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent actionEvent) {
-				Object text = model.getValueAt(sorter.convertRowIndexToModel(table.getSelectedRow()),
-						table.getSelectedColumn());
+				Object text = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
 				if (text == null) {
 					return;
 				}
